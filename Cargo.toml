@@ -1,0 +1,21 @@
+[package]
+name = "gos"
+version = "0.1.0"
+edition = "2021"
+categories = ["development-tools", "go"]
+documentation = "https://github.com/limitcool/gos"
+description = " gos is a Rust project that helps you create a Go project with the modules you specify in a config file. It automatically writes the import statements in the main.go file and runs go mod init and go mod tidy for you."
+license-file = "LICENSE"
+readme = "README.md"
+homepage = "https://github.com/limitcool/gos"
+repository = "https://github.com/limitcool/gos"
+keywords = ["go", "modules"]
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+directories = "5.0.1"
+rust-embed = "8.2.0"
+serde = { version = "1.0.193", features = ["derive"] }
+serde_yaml = "0.9.29"
+tracing = "0.1.40"
+tracing-subscriber = "0.3.18"
