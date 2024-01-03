@@ -29,6 +29,8 @@ cargo build --release
 ```yaml
 # 你想要使用的Go模块
 Mods: ["github.com/charmbracelet/log"]
+# 是否自动创建 Vscode launch.json
+CreateVscodeLaunch: true
 ```
 
 你可以指定任何你想要的模块，只要它们是有效的Go模块。

@@ -1,1 +1,2 @@
-Mods: ["github.com/charmbracelet/log"]
+Mods: []
+CreateVscodeLaunch: true

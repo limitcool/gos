@@ -1,11 +1,35 @@
 use rust_embed::RustEmbed;
-use std::fs::{self, write, File};
+use std::fs::{self, create_dir, create_dir_all, write, File};
 use std::io::Read;
 use std::io::Write;
 use tracing::info;
 
-use crate::config::Config;
+pub const VSCODE_LAUNCH: &str = r#"{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Package",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${workspaceFolder}/main.go"
+        }
+    ]
+}"#;
 
+pub const GO_TEMPATE: &str = r#"package main
+
+    import (
+    )
+
+    func main() {
+        log.Print("gos")
+    }"#;
+
+use crate::config::Config;
 mod config;
 fn main() {
     tracing_subscriber::fmt()
@@ -45,18 +69,16 @@ fn main() {
 struct Asset;
 
 fn create_project(project_name: &str, config: Config) -> Result<(), std::io::Error> {
-    fs::create_dir(project_name)?;
+    create_dir(project_name)?;
     // let go_temp = Asset::get("main.tpl").unwrap();
-    let go_temp = r#"package main
-
-import (
-)
-
-func main() {
-    log.Print("gos")
-}"#;
     let mut f = fs::File::create(&format!("{}/{}", project_name, "main.go"))?;
-    f.write(&go_temp.as_bytes())?;
+    f.write(&GO_TEMPATE.as_bytes())?;
+    if config.create_vscode_launch {
+        info!("Create Vscode launch.json");
+        create_dir_all(format!("{}/{}", project_name, ".vscode"))?;
+        let mut f = fs::File::create(&format!("{}/{}/{}", project_name, ".vscode", "launch.json"))?;
+        f.write(&VSCODE_LAUNCH.as_bytes())?;
+    }
     add_mod(config.mods, project_name);
     info!("Current directory is: {:?}", std::env::current_dir()?);
     std::env::set_current_dir(project_name)?;

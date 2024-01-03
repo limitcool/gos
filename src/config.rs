@@ -6,12 +6,16 @@ use tracing::info;
 #[serde(rename_all = "PascalCase")]
 pub struct Config {
     pub mods: Vec<String>,
+    pub create_vscode_launch: bool,
 }
 
 impl Config {
     pub fn new(config_path: &str) -> Result<Config, Box<dyn Error>> {
         info!(config_path);
-        let mut config = Config { mods: vec![] };
+        let mut config = Config {
+            mods: vec![],
+            create_vscode_launch: false,
+        };
         if std::path::Path::new(config_path).exists() {
             let file = fs::File::open(config_path)?;
             config = serde_yaml::from_reader(file)?;

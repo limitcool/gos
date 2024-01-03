@@ -1,15 +1,16 @@
 [package]
 name = "gos"
-version = "0.1.0"
+version = "0.1.1"
+authors = ["initcool <initcoool@gmail.com>"]
 edition = "2021"
 categories = ["development-tools", "go"]
-documentation = "https://github.com/limitcool/gos"
+# documentation = "https://docs.rs/crate/gos"
 description = " gos is a Rust project that helps you create a Go project with the modules you specify in a config file. It automatically writes the import statements in the main.go file and runs go mod init and go mod tidy for you."
 license-file = "LICENSE"
 readme = "README.md"
 homepage = "https://github.com/limitcool/gos"
 repository = "https://github.com/limitcool/gos"
-keywords = ["go", "modules"]
+keywords = ["go", "modules", "vscode"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
