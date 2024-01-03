@@ -1,12 +1,12 @@
 [package]
 name = "gos"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["initcool <initcoool@gmail.com>"]
 edition = "2021"
 categories = ["development-tools", "go"]
-# documentation = "https://docs.rs/crate/gos"
+documentation = "https://docs.rs/gos"
 description = " gos is a Rust project that helps you create a Go project with the modules you specify in a config file. It automatically writes the import statements in the main.go file and runs go mod init and go mod tidy for you."
-license-file = "LICENSE"
+license = "GPL-3.0-or-later"
 readme = "README.md"
 homepage = "https://github.com/limitcool/gos"
 repository = "https://github.com/limitcool/gos"

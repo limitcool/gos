@@ -32,6 +32,7 @@ pub const GO_TEMPATE: &str = r#"package main
 use crate::config::Config;
 mod config;
 fn main() {
+    let gos_version = env!("CARGO_PKG_VERSION");
     tracing_subscriber::fmt()
         // filter spans/events with level TRACE or higher.
         .with_max_level(tracing::Level::INFO)
@@ -42,7 +43,16 @@ fn main() {
     let args: Vec<String> = std::env::args().collect();
     // 检查参数个数是否正确
     if args.len() != 3 || &args[1] != "new" {
-        println!("Usage: gos new project_name");
+        if args.len() == 2 {
+            if &args[1] == "version" || &args[1] == "--version" {
+                print!("gos version: {}", gos_version)
+            } else {
+                println!("Usage: gos new project_name");
+            }
+        } else {
+            println!("Usage: gos new project_name");
+        }
+
         return;
     }
     // 获取 project_name
