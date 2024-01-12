@@ -1,38 +1,21 @@
-use rust_embed::RustEmbed;
 use std::fs::{self, create_dir, create_dir_all, write, File};
 use std::io::Read;
 use std::io::Write;
 use tracing::info;
 
-pub const VSCODE_LAUNCH: &str = r#"{
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Launch Package",
-            "type": "go",
-            "request": "launch",
-            "mode": "auto",
-            "program": "${workspaceFolder}/main.go"
-        }
-    ]
-}"#;
-
-pub const GO_TEMPATE: &str = r#"package main
-
-    import (
-    )
-
-    func main() {
-        log.Print("gos")
-    }"#;
+mod constants;
+mod license;
 
 use crate::config::Config;
 mod config;
+
+const MAIN_GO_FILE: &str = "main.go";
+const LICENSE_FILE: &str = "LICENSE";
+const VS_CODE_DIR: &str = ".vscode";
+const LAUNCH_JSON_FILE: &str = "launch.json";
+const MOD_IMPORT_MARKER: &str = "import (";
 fn main() {
-    let gos_version = env!("CARGO_PKG_VERSION");
+    let gos_version: &str = env!("CARGO_PKG_VERSION");
     tracing_subscriber::fmt()
         // filter spans/events with level TRACE or higher.
         .with_max_level(tracing::Level::INFO)
@@ -66,7 +49,7 @@ fn main() {
     //     // Mac: /Users/Alice/Library/Application Support/com.Foo-Corp.Bar-App
     // }
     // 调用 create_project 函数
-    match create_project(project_name, Config::new("config.yaml").unwrap()) {
+    match create_project(project_name, Config::new().unwrap()) {
         Ok(_) => {
             info!("All done")
         }
@@ -74,21 +57,23 @@ fn main() {
     }
 }
 
-#[derive(RustEmbed)]
-#[folder = "template/"]
-struct Asset;
-
 fn create_project(project_name: &str, config: Config) -> Result<(), std::io::Error> {
     create_dir(project_name)?;
     // let go_temp = Asset::get("main.tpl").unwrap();
     let mut f = fs::File::create(&format!("{}/{}", project_name, "main.go"))?;
-    f.write(&GO_TEMPATE.as_bytes())?;
+    f.write(constants::go_template::CODE.as_bytes())?;
     if config.create_vscode_launch {
         info!("Create Vscode launch.json");
-        create_dir_all(format!("{}/{}", project_name, ".vscode"))?;
-        let mut f = fs::File::create(&format!("{}/{}/{}", project_name, ".vscode", "launch.json"))?;
-        f.write(&VSCODE_LAUNCH.as_bytes())?;
+        create_dir_all(format!("{}/{}", project_name, VS_CODE_DIR))?;
+        let mut f = fs::File::create(&format!(
+            "{}/{}/{}",
+            project_name, VS_CODE_DIR, LAUNCH_JSON_FILE
+        ))?;
+        f.write(constants::vscode_launch::CONFIG.as_bytes())?;
     }
+    if config.create_license {
+        create_license(project_name).unwrap();
+    };
     add_mod(config.mods, project_name);
     info!("Current directory is: {:?}", std::env::current_dir()?);
     std::env::set_current_dir(project_name)?;
@@ -107,8 +92,8 @@ fn create_project(project_name: &str, config: Config) -> Result<(), std::io::Err
     Ok(())
 }
 
-fn add_mod(mods: Vec<String>, project_name: &str) -> () {
-    let project_file_path = format!("{}/{}", project_name, "main.go");
+fn add_mod(mods: Vec<String>, project_name: &str) {
+    let project_file_path = format!("{}/{}", project_name, MAIN_GO_FILE);
     // 打开 main.tpl 文件
     let mut file = File::open(&project_file_path).expect("Failed to open file");
     // 创建一个空的字符串变量
@@ -118,11 +103,11 @@ fn add_mod(mods: Vec<String>, project_name: &str) -> () {
         .expect("Failed to read file");
     mods.iter().for_each(|mod_name|
     // 查找  import ( 的位置
-        if let Some(pos) = content.find("import (") {
+        if let Some(pos) = content.find(MOD_IMPORT_MARKER) {
             // 在 import ( 的末尾插入换行符和mod
             info!("Add mod \"{}\"",mod_name);
             content.insert_str(
-                pos + "import (".len(),
+                pos + MOD_IMPORT_MARKER.len(),
                 format!("\n\t\"{}\"", mod_name).as_str(),
             );
         }
@@ -130,4 +115,11 @@ fn add_mod(mods: Vec<String>, project_name: &str) -> () {
 
     // 将修改后的字符串变量写回到 main.tpl 文件中
     write(project_file_path, &content).expect("Failed to write file");
+}
+
+fn create_license(project_name: &str) -> Result<(), std::io::Error> {
+    info!("Create LICENSE");
+    let mut f = fs::File::create(&format!("{}/{}", project_name, LICENSE_FILE))?;
+    f.write(license::LICENSE_GPL.as_bytes())?;
+    Ok(())
 }

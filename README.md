@@ -31,6 +31,8 @@ The first time you run gos, it will create a config file named `config.yaml` in 
 ```yaml
 # The Go modules you want to use
 Mods: ["github.com/charmbracelet/log"]
+#  Whether to automatically create Vscode launch.json
+CreateVscodeLaunch: true
 ```
 
 You can specify any modules you want, as long as they are valid Go modules.
@@ -47,11 +49,11 @@ This will create a Go project with the name and modules you specified in the con
 package main
 
 import (
-	"github.com/charmbracelet/log"
+ "github.com/charmbracelet/log"
 )
 
 func main() {
-	log.Info("gos")
+ log.Info("gos")
 }
 ```
 

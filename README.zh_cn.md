@@ -47,11 +47,11 @@ gos new <project_name>
 package main
 
 import (
-	"github.com/charmbracelet/log"
+ "github.com/charmbracelet/log"
 )
 
 func main() {
-	log.Info("gos")
+ log.Info("gos")
 }
 ```
 
