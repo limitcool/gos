@@ -1,3 +1,5 @@
 Mods: []
 CreateVscodeLaunch: true
 CreateLicense: true
+CreateGitIgnore: true
+CreateReadme: true

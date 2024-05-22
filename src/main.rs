@@ -11,6 +11,8 @@ mod config;
 
 const MAIN_GO_FILE: &str = "main.go";
 const LICENSE_FILE: &str = "LICENSE";
+const README_FILE: &str = "README.md";
+const GITIGNORE_FILE: &str = ".gitignore";
 const VS_CODE_DIR: &str = ".vscode";
 const LAUNCH_JSON_FILE: &str = "launch.json";
 const MOD_IMPORT_MARKER: &str = "import (";
@@ -74,6 +76,12 @@ fn create_project(project_name: &str, config: Config) -> Result<(), std::io::Err
     if config.create_license {
         create_license(project_name).unwrap();
     };
+    if config.create_gitignore {
+        create_gitignore(project_name).unwrap();
+    };
+    if config.create_readme {
+        create_readme(project_name).unwrap();
+    };
     add_mod(config.mods, project_name);
     info!("Current directory is: {:?}", std::env::current_dir()?);
     std::env::set_current_dir(project_name)?;
@@ -121,5 +129,19 @@ fn create_license(project_name: &str) -> Result<(), std::io::Error> {
     info!("Create LICENSE");
     let mut f = fs::File::create(&format!("{}/{}", project_name, LICENSE_FILE))?;
     f.write(license::LICENSE_GPL.as_bytes())?;
+    Ok(())
+}
+
+fn create_gitignore(project_name: &str) -> Result<(), std::io::Error> {
+    info!("Create .gitignore");
+    let mut f = fs::File::create(&format!("{}/{}", project_name, GITIGNORE_FILE))?;
+    f.write(b"")?;
+    Ok(())
+}
+
+fn create_readme(project_name: &str) -> Result<(), std::io::Error> {
+    info!("Create README.md");
+    let mut f = fs::File::create(&format!("{}/{}", project_name, README_FILE))?;
+    f.write(format!("## {}\n\n", project_name).as_bytes())?;
     Ok(())
 }
