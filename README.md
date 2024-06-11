@@ -4,7 +4,7 @@ English| [简体中文](README.zh_cn.md)
 
 [![crates.io](https://img.shields.io/crates/v/gos.svg)](https://crates.io/crates/gos)
 [![Docs](https://docs.rs/gos/badge.svg)](https://docs.rs/gos)
-[![MSRV](https://img.shields.io/badge/rustc-1.78.0+-ab6000.svg)]
+![MSRV](https://img.shields.io/badge/rustc-1.78.0+-ab6000.svg)
 
 gos is a tool written in Rust that helps you quickly create a Go project by specifying the Go modules you want to use in a config file. It automatically writes the import statements in the main.go file and runs go mod init and go mod tidy for you, initializing and updating your module dependencies.
 

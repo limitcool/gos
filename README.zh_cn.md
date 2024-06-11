@@ -4,7 +4,7 @@
 
 [![crates.io](https://img.shields.io/crates/v/gos.svg)](https://crates.io/crates/gos)
 [![Docs](https://docs.rs/gos/badge.svg)](https://docs.rs/gos)
-[![MSRV](https://img.shields.io/badge/rustc-1.78.0+-ab6000.svg)]
+![MSRV](https://img.shields.io/badge/rustc-1.78.0+-ab6000.svg)
 
 gos是一个用Rust编写的工具，它可以帮助你快速创建一个Go项目，只需在一个配置文件中指定你想要使用的Go模块。它会自动在main.go文件中写入导入语句，并为你运行go mod init和go mod tidy，初始化和更新你的模块依赖。
 
