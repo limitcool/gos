@@ -1,6 +1,6 @@
 # gos
 
-[中文自述在这里.](README.zh_cn.md)
+English| [简体中文](README.zh_cn.md)
 
 [![crates.io](https://img.shields.io/crates/v/gos.svg)](https://crates.io/crates/gos)
 [![Docs](https://docs.rs/gos/badge.svg)](https://docs.rs/gos)

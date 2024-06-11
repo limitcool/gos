@@ -1,5 +1,7 @@
 # gos
 
+[English](README.md) | 简体中文
+
 [![crates.io](https://img.shields.io/crates/v/gos.svg)](https://crates.io/crates/gos)
 [![Docs](https://docs.rs/gos/badge.svg)](https://docs.rs/gos)
 [![MSRV](https://img.shields.io/badge/rustc-1.78.0+-ab6000.svg)]
